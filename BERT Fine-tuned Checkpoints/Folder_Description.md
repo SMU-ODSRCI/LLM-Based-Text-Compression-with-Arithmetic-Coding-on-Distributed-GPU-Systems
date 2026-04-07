@@ -1,0 +1,1 @@
+This folder contains the fine-tuned checkpoints for BERT that can be used for the BERT + AC multi-GPU inference runs. We used the 1-GPU fine-tuned checkpoints for all the multi-GPU inference runs to ensure consistency. 
