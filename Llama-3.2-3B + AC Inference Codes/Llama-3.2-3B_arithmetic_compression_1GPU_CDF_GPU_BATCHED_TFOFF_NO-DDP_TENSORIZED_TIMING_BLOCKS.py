@@ -140,21 +140,21 @@ def probs_to_int_cdf_batched(prob_dist_batched = None, total = None):
 # Bits come from an underlying byte stream, read in big endian order (MSB --> LSB within each byte)
 # Total no. of bits is always a multiple of 8
 class BitInputStream(object):
-        # Construct a bit input stream based on the given byte input stream
+    # Construct a bit input stream based on the given byte input stream
 	def __init__(self, input):
 		self.input = input # Underlying byte stream to read from
 		self.current_byte = 0 # Most recently read byte within the range [0, 255] or -1 when EOF is reached
 		self.remaining_num_bits = 0 # No. of bits left to consume from current byte
 		self.bits = 0 # Counts the no. of bits consumed
 
-        # Read a bit from the current stream
-        # Returns 0 or 1 if bit is available or -1 if end-of-stream is reached, which always occurs on a byte boundary
+    # Read a bit from the current stream
+    # Returns 0 or 1 if bit is available or -1 if end-of-stream is reached, which always occurs on a byte boundary
 	def read_bit(self):
                 # If EOF hit previously, stay at EOF
 		if self.current_byte == -1:
 			return -1
 
-                # If no bits remaining in buffer, read the next byte from the underlying stream
+        # If no bits remaining in buffer, read the next byte from the underlying stream
 		if self.remaining_num_bits == 0:
 			byte = self.input.read(1) # Read 1 byte from the byte stream
 			if len(byte) == 0: # No bytes returned --> EOF
@@ -163,22 +163,22 @@ class BitInputStream(object):
 			self.current_byte = byte[0]
 			self.remaining_num_bits = 8 # 8 unread bits in current_byte
 
-                # Consume one bit in big endian order, where we take the next most-significant remaining bit
+        # Consume one bit in big endian order, where we take the next most-significant remaining bit
 		assert self.remaining_num_bits > 0
 		self.remaining_num_bits -= 1
 		bit = (self.current_byte >> self.remaining_num_bits) & 1
 		self.bits += 1
 		return bit
 
-        # Reads a bit from the current stream
-        # Returns 0 or 1 if bit is available or raises an EOFError if end-of-stream is reached
+    # Reads a bit from the current stream
+    # Returns 0 or 1 if bit is available or raises an EOFError if end-of-stream is reached
 	def read_no_eof(self):
 		result = self.read_bit()
 		if result != -1:
 			return result
 		raise EOFError()
 
-        # Close the current and underlying input stream
+    # Close the current and underlying input stream
 	def close_stream(self):
 		self.input.close()
 		self.current_byte = -1
@@ -188,32 +188,32 @@ class BitInputStream(object):
 # At close(), the stream is padded with 0-bits up to a multiple of 8
 # Bits are written in big endian order (MSB --> LSB within each byte)
 class BitOutputStream(object):
-        # Construct a bit output stream based on the given byte output stream
+    # Construct a bit output stream based on the given byte output stream
 	def __init__(self, output):
 		self.output = output # Underlying byte stream to write to
 		self.current_byte = 0 # Accumulator for the current byte being built
 		self.filled_num_bits = 0 # No. of bits written into current_byte
 
-        # Writes a bit to the stream, where the given bit must be 0 or 1
+    # Writes a bit to the stream, where the given bit must be 0 or 1
 	def write_bit(self, bit):
-                # Check for bit correctness
+        # Check for bit correctness
 		if bit not in (0, 1):
 			raise ValueError('Argument must be 0 or 1')
 
-                # Shift left by 1 to make room for the new bit
+        # Shift left by 1 to make room for the new bit
 		self.current_byte = (self.current_byte << 1) | bit
 		self.filled_num_bits += 1
 
-                # If accumulated 8 bits, then flush as one byte to the underlying stream
+        # If accumulated 8 bits, then flush as one byte to the underlying stream
 		if self.filled_num_bits == 8:
 			self.output.write(bytes((self.current_byte,))) # Writes a single byte
 			self.current_byte = 0
 			self.filled_num_bits = 0
 
-        # Flush the remaining bits with 0-padding to reach the next byte boundary, then close the stream
+    # Flush the remaining bits with 0-padding to reach the next byte boundary, then close the stream
 	def close_stream(self):
-                # Pad with zeros until byte is packed
-                # Decode stops after N tokens so byte padding does not matter
+        # Pad with zeros until byte is packed
+        # Decode stops after N tokens so byte padding does not matter
 		while self.filled_num_bits != 0:
 			self.write_bit(0)
 		if not isinstance(self.output, io.BytesIO):
@@ -236,11 +236,11 @@ class ArithmeticCoder:
 
 		if self.mode == 'encode':
 			self.pending = 0
-                        # New byte-packed output bitstream using BitOutputStream
+            # New byte-packed output bitstream using BitOutputStream
 			self.byte_out = io.BytesIO() # In-memory byte stream
 			self.bit_out = BitOutputStream(self.byte_out) # Bit-level writer that packs bits into bytes
 		else:
-                        # New byte-packed input bitstream using BitInputStream
+            # New byte-packed input bitstream using BitInputStream
 			if bitstream is None:
 				bitstream = b'' # Default empty bytes
 			self.byte_in = io.BytesIO(bitstream) # Wrap bytes in a byte-stream interface so that BitInputStream can read bits
@@ -301,7 +301,7 @@ class ArithmeticCoder:
 		else:
 			self.output_bits(1)
 
-                # Close BitOutputStream and return raw bytes from the underlying byte stream
+        # Close BitOutputStream and return raw bytes from the underlying byte stream
 		self.bit_out.close_stream()
 		return self.byte_out.getvalue() # Packed byte stream
 
@@ -374,11 +374,11 @@ def evaluate_ac_llama(device = None, data_path = None, context_window = 64, temp
 	als_to_cpu_enc_time_ms = 0.0
 	als_to_cpu_dec_time_ms = 0.0
 
-        # CUDA event buffer
+    # CUDA event buffer
 	event_buff = []
 	flush_every = 256
 
-        # Initialize CPU timing accumulators
+    # Initialize CPU timing accumulators
 	ac_enc_time = 0.0
 	ac_dec_time = 0.0
 
@@ -439,7 +439,7 @@ def evaluate_ac_llama(device = None, data_path = None, context_window = 64, temp
 			start = end
 		return batches
 
-        # Reduce batch size until all streams have enough length
+    # Reduce batch size until all streams have enough length
 	B_target = 128
 	B = min(B_target, max(1, len(tokens) // (context_window + 1)))
 	streams = split_into_B_batches(tokens, B)
@@ -455,16 +455,16 @@ def evaluate_ac_llama(device = None, data_path = None, context_window = 64, temp
 		streams_tensor[idx, :len(stream)] = torch.tensor(stream, device = device, dtype = torch.long)
 	stream_ids_tensor = torch.arange(B, device = device, dtype = torch.long) # Stream indices to be used inside the hot loop
 
-        # Initialize encoder performance metrics
+    # Initialize encoder performance metrics
 	total_tokens = 0
 	total_log_likelihood = 0.0
 	total_kl_divergence = 0.0
 
-        # Batched encoding across independent token streams
+    # Batched encoding across independent token streams
 	encoders = [ArithmeticCoder(mode = 'encode', num_state_bits = 32) for _ in range(B)]
 	encoder_context_all = torch.tensor([stream[:context_window] for stream in streams], device = device, dtype = torch.long)
 
-        # Next position to encode for each stream
+    # Next position to encode for each stream
 	max_steps = max(len(stream) - context_window for stream in streams)
 	torch.cuda.synchronize() # CUDA time synchronization added at the beginning of encoding time boundary
 	encoder_start = time.time()
@@ -477,7 +477,7 @@ def evaluate_ac_llama(device = None, data_path = None, context_window = 64, temp
 			# Keep batch_stream_id as a tensor
 			batch_stream_id = stream_ids_tensor[batch:batch + B_target]
 
-                        # A stream is active at this step if it has token at index position (context_window + step)
+            # A stream is active at this step if it has token at index position (context_window + step)
 			# Tensorize active local stream selection by removing Python list indexing and replacing it with pure tensor operations
 			active_mask = position < length[batch_stream_id]
 			active_stream = batch_stream_id[active_mask]
@@ -486,7 +486,7 @@ def evaluate_ac_llama(device = None, data_path = None, context_window = 64, temp
 			any_active_stream = True
 
 			context_ids_batch = encoder_context_all[active_stream]
-                        # Build Llama decoder contexts and attention masks from previously encoded tokens
+            # Build Llama decoder contexts and attention masks from previously encoded tokens
 			context_ids = context_ids_batch
 			attention_masks = torch.ones_like(context_ids, device = device, dtype = torch.long)
 
@@ -494,7 +494,7 @@ def evaluate_ac_llama(device = None, data_path = None, context_window = 64, temp
 				start, end = event_pair()
 				start.record()
 
-                        # Batched next-token probabilities across independent streams
+            # Batched next-token probabilities across independent streams
 			prob_dist_batched = predict_next_token_probs(llama_model, batch_context_ids = context_ids, batch_attention_masks = attention_masks, temperature = temperature)
 
 			if INFERENCE_TIME_ENC:
@@ -522,7 +522,7 @@ def evaluate_ac_llama(device = None, data_path = None, context_window = 64, temp
 				end.record()
 				event_buff.append(('cdf2cpu_enc', start, end))
 
-                        # True next token for each batch of active streams
+            # True next token for each batch of active streams
 			# True token extraction is now tensorized with no Python list indexing and moved to CPU once per batch
 			true_token = streams_tensor[active_stream, position]
 
@@ -536,7 +536,7 @@ def evaluate_ac_llama(device = None, data_path = None, context_window = 64, temp
 				end.record()
 				event_buff.append(('tok2cpu_enc', start, end))
 
-                        # Compute NLL and KL for each batch of active streams
+            # Compute NLL and KL for each batch of active streams
 			batch_idx = torch.arange(active_stream.numel(), device = device, dtype = torch.long)
 			prob_true_batched = prob_dist_batched[batch_idx, true_token]
 			total_log_likelihood += (-torch.log(prob_true_batched)).sum()
@@ -580,7 +580,7 @@ def evaluate_ac_llama(device = None, data_path = None, context_window = 64, temp
 		if not any_active_stream:
 			break
 
-        # Finalize per-stream bitstreams
+    # Finalize per-stream bitstreams
 	bitstreams = [encoders[idx].finish() for idx in range(B)]
 	torch.cuda.synchronize() # CUDA time synchronization added at the end of encoding time boundary
 	encoder_end = time.time()
@@ -593,16 +593,16 @@ def evaluate_ac_llama(device = None, data_path = None, context_window = 64, temp
 	true_token_to_cpu_enc_time = true_token_to_cpu_enc_time_ms / 1000.00
 	als_to_cpu_enc_time = als_to_cpu_enc_time_ms / 1000.00
 
-        # Calculate total compressed bits
+    # Calculate total compressed bits
 	total_compressed_bits = sum(len(bitstream) for bitstream in bitstreams) * 8
 
-        # Batched decoding across independent streams
+    # Batched decoding across independent streams
 	total_matches = 0
 	decoded_tokens = 0
 	decoders = [ArithmeticCoder(mode = 'decode', num_state_bits = 32, bitstream = bitstreams[idx]) for idx in range(B)]
 	decoder_context_all = torch.tensor([stream[:context_window] for stream in streams], device = device, dtype = torch.long)
 
-        # Next position to decode for each stream
+    # Next position to decode for each stream
 	torch.cuda.synchronize() # CUDA time synchronization added at the beginning of decoding time boundary
 	decoder_start = time.time()
 	for step in range(max_steps):
@@ -614,8 +614,8 @@ def evaluate_ac_llama(device = None, data_path = None, context_window = 64, temp
 			# Keep batch_stream_id as a tensor
 			batch_stream_id = stream_ids_tensor[batch:batch + B_target]
 
-                        # A stream is active at this step if it has token at index position (context_window + step)
-                        # Tensorize active local stream selection by removing Python list indexing and replacing it with pure tensor operations
+            # A stream is active at this step if it has token at index position (context_window + step)
+            # Tensorize active local stream selection by removing Python list indexing and replacing it with pure tensor operations
 			active_mask = position < length[batch_stream_id]
 			active_stream = batch_stream_id[active_mask]
 			if active_stream.numel() == 0:
@@ -623,7 +623,7 @@ def evaluate_ac_llama(device = None, data_path = None, context_window = 64, temp
 			any_active_stream = True
 
 			context_ids_batch = decoder_context_all[active_stream]
-                        # Build Llama decoder contexts and attention masks from decoded tokens
+            # Build Llama decoder contexts and attention masks from decoded tokens
 			context_ids = context_ids_batch
 			attention_masks = torch.ones_like(context_ids, device = device, dtype = torch.long)
 
@@ -631,7 +631,7 @@ def evaluate_ac_llama(device = None, data_path = None, context_window = 64, temp
 				start, end = event_pair()
 				start.record()
 
-                        # Recompute probabilities from the decoded contexts
+            # Recompute probabilities from the decoded contexts
 			prob_dist_batched = predict_next_token_probs(llama_model, batch_context_ids = context_ids, batch_attention_masks = attention_masks, temperature = temperature)
 
 			if INFERENCE_TIME_DEC:
@@ -660,7 +660,7 @@ def evaluate_ac_llama(device = None, data_path = None, context_window = 64, temp
 				event_buff.append(('cdf2cpu_dec', start, end))
 
  			# True next token for each batch of active streams
-                        # True token extraction is now tensorized with no Python list indexing and moved to CPU one per batch
+            # True token extraction is now tensorized with no Python list indexing and moved to CPU one per batch
 			true_token = streams_tensor[active_stream, position]
 
 			if TRUE_TOKEN_TO_CPU_DEC_TIME:
@@ -693,7 +693,7 @@ def evaluate_ac_llama(device = None, data_path = None, context_window = 64, temp
 
 				actual_token = int(true_token_cpu[idx])
 
-                                # Update decoder rolling contexts with the decoded tokens
+                # Update decoder rolling contexts with the decoded tokens
 				decoder_context_all[stream_id, :-1] = decoder_context_all[stream_id, 1:].clone()
 				decoder_context_all[stream_id, -1] = decoded_token
 
