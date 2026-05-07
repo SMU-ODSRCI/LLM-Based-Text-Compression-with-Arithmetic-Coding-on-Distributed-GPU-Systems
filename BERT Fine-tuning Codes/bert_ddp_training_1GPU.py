@@ -107,7 +107,7 @@ class TextDataset(Dataset):
 
 		return encoder_input_ids, encoder_attention_masks, labels
 
-# BERT fine-tuning for next-token prediction
+# BERT fine-tuning for next-token predictions
 def train_bert(dataloader, train_sampler, device, rank, local_rank, epochs = 10, lr = 1e-5, max_norm = 1.0):
 	model = CausalBERT(device = device)
 	model = DDP(model, device_ids = [local_rank])
