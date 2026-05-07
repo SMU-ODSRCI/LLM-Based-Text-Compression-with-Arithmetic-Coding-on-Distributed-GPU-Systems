@@ -20,7 +20,7 @@ from torch.nn.utils import clip_grad_norm_
 import torch.nn.functional as F
 from types import SimpleNamespace
 
-# Distributed Configuration
+# Distributed configuration
 def distributed_config(rank, world_size, local_rank):
 	host = os.environ.get('MASTER_ADDR', None)
 	if host is None:
@@ -40,7 +40,7 @@ def distributed_config(rank, world_size, local_rank):
 def clean_process():
 	dist.destroy_process_group()
 
-# BERT neural network predictor for causal prediction
+# RoBERTa neural network for causal next-token predictions
 class CausalRoBERTa(nn.Module):
 	def __init__(self, device = None, model_name = 'roberta-base'):
 		super().__init__()
@@ -71,9 +71,9 @@ class TextDataset(Dataset):
 	For each token position in this class, we consider an overlapping context window of 64 tokens, where:
 		- context = tokens[idx:idx + context_window]
 		- ground truth token (target) = tokens[idx + context_window]
-	Windowed training samples are no longer precomputed and stored using Python lists as it can make the dataset construction computationally expensive
-	Instead, the original token sequence is stored once and each window is created only when DataLoader asks for the token sample at position 'idx'
-	This still preserves the same stride-1 overlapping windows, but with lower memory consumption
+	Windowed training samples are no longer precomputed and stored using Python lists as it can make the dataset construction computationally expensive.
+	Instead, the original token sequence is stored once and each window is created only when DataLoader asks for the token sample at position 'idx'.
+	This still preserves the same stride-1 overlapping windows, but with lower memory consumption.
 
 	Since inference uses 64 context tokens as RoBERTa's encoder input (no pad token handling required),
 	training (fine-tuning) should also use the same encoder contexts, but compute loss only at the last decoder position, predicting exactly one next-token per sliding window.
@@ -108,7 +108,7 @@ class TextDataset(Dataset):
 
 		return encoder_input_ids, encoder_attention_masks, labels
 
-# Fine-tuning and training BERT for next token prediction
+# RoBERTa fine-tuning for next-token predictions
 def train_roberta(dataloader, train_sampler, device, rank, local_rank, epochs = 10, lr = 1e-5, max_norm = 1.0):
 	model = CausalRoBERTa(device = device)
 	model = DDP(model, device_ids = [local_rank])
