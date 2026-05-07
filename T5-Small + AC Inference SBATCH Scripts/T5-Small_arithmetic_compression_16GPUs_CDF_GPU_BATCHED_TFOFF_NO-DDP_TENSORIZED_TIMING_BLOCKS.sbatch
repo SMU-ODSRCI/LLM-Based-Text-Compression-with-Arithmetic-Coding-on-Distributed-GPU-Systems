@@ -9,7 +9,7 @@
 # ===== Shared Job Settings =====
 #SBATCH -p batch
 #SBATCH -A nimam_ml_project_0002
-#SBATCH -J T5-Small_arithmetic_compression
+#SBATCH -J t5-small_arithmetic_compression
 #SBATCH --output=T5-Small_16GPUs_CDF_GPU_BATCHED_TFOFF_NO-DDP_TENSORIZED_TIMING_BLOCKS_v2_%j.out
 #SBATCH --error=T5-Small_16GPUs_CDF_GPU_BATCHED_TFOFF_NO-DDP_TENSORIZED_TIMING_BLOCKS_v2_%j.err
 #SBATCH --time=00:30:00
