@@ -18,7 +18,7 @@ import torch.distributed as dist
 from torch.amp import autocast, GradScaler
 from torch.nn.utils import clip_grad_norm_
 
-# Distributed Configuration
+# Distributed configuration
 def distributed_config(rank, world_size, local_rank):
 	host = os.environ.get('MASTER_ADDR', None)
 	if host is None:
@@ -38,7 +38,7 @@ def distributed_config(rank, world_size, local_rank):
 def clean_process():
 	dist.destroy_process_group()
 
-# T5 neural network predictor for causal prediction
+# T5-Small neural network for causal next-token predictions
 class CausalT5(nn.Module):
 	def __init__(self, device = None, model_name = 't5-small'):
 		super().__init__()
@@ -51,19 +51,19 @@ class CausalT5(nn.Module):
 		outputs = self.t5model(input_ids = encoder_input_ids, attention_mask = encoder_attention_masks, decoder_input_ids = decoder_input_ids, decoder_attention_mask = decoder_attention_masks, labels = labels, past_key_values = past_key_values, use_cache = use_cache, return_dict = True)
 		return outputs
 
-# Data Loading and Preprocessing for fine-tuning T5-Small in a causal, autoregressive manner
+# Data loading and preprocessing
 class TextDataset(Dataset):
 	"""
 	TextDataset() class for next-token prediction training with a fixed sliding window.
 	For each token position in this class, we consider an overlapping context window of 64 tokens, where:
 		- context = tokens[idx:idx + context_window]
 		- ground truth token (target) = tokens[idx + context_window]
-	Windowed training samples are no longer precomputed and stored using Python lists as it can make the dataset construction computationally expensive
-	Instead, the original token sequence is stored once and each window is created only when DataLoader asks for the token sample at position 'idx'
-	This still preserves the same stride-1 overlapping windows, but with lower memory consumption
+	Windowed training samples are no longer precomputed and stored using Python lists as it can make the dataset construction computationally expensive.
+	Instead, the original token sequence is stored once and each window is created only when DataLoader asks for the token sample at position 'idx'.
+	This still preserves the same stride-1 overlapping windows, but with lower memory consumption.
 
 	Since inference uses 64 context tokens as T5-Small's encoder input and its right-shited, padded version (pad token ID at the start) as its decoder input,
-	training (fine-tuning) should also use the same encoder and decoder contexts, but compute loss only at the last decoder position, predicting exactly one next-token per sliding window
+	training (fine-tuning) should also use the same encoder and decoder contexts, but compute loss only at the last decoder position, predicting exactly one next-token per sliding window.
 	"""
 	def __init__(self, tokens, context_window = None, pad_token_id = None):
 		super().__init__()
@@ -102,7 +102,7 @@ class TextDataset(Dataset):
 
 		return encoder_input_ids, encoder_attention_masks, decoder_input_ids, decoder_attention_masks, labels
 
-# Fine-tuning T5-Small for next-token predictions
+# T5-Small fine-tuning for next-token predictions
 def train_t5(dataloader, train_sampler, device, rank, local_rank, epochs = 10, lr = 1e-5, max_norm = 1.0):
 	t5model = CausalT5(device = device)
 	t5model = DDP(t5model, device_ids = [local_rank])
