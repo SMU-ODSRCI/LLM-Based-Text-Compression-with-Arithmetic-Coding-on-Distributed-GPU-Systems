@@ -9,9 +9,9 @@
 # ===== Shared Job Settings =====
 #SBATCH -p batch
 #SBATCH -A nimam_ml_project_0002
-#SBATCH -J Llama-3.2_arithmetic_compression
-#SBATCH --output=Llama-3.2_12GPUs_CDF_GPU_BATCHED_TFOFF_NO-DDP_TENSORIZED_TIMING_BLOCKS_v2_%j.out
-#SBATCH --error=Llama-3.2_12GPUs_CDF_GPU_BATCHED_TFOFF_NO-DDP_TENSORIZED_TIMING_BLOCKS_v2_%j.err
+#SBATCH -J llama-3.2-3B_arithmetic_compression
+#SBATCH --output=Llama-3.2-3B_12GPUs_CDF_GPU_BATCHED_TFOFF_NO-DDP_TENSORIZED_TIMING_BLOCKS_v2_%j.out
+#SBATCH --error=Llama-3.2-3B_12GPUs_CDF_GPU_BATCHED_TFOFF_NO-DDP_TENSORIZED_TIMING_BLOCKS_v2_%j.err
 #SBATCH --time=00:30:00
 #SBATCH --mail-type=END
 #SBATCH --mail-user=abrara@mail.smu.edu
