@@ -40,7 +40,7 @@ def distributed_config(rank, world_size, local_rank):
 def clean_process():
 	dist.destroy_process_group()
 
-# BERT neural network predictor for causal prediction
+# BERT neural network for causal next-token predictions
 class CausalBERT(nn.Module):
 	def __init__(self, device = None, model_name = 'bert-base-cased'):
 		super().__init__()
