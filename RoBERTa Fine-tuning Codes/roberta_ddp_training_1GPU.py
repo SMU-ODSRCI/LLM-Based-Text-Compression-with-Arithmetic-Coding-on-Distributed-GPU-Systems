@@ -166,7 +166,7 @@ def main_worker(rank, world_size, local_rank, epochs = 10, batch_size = 128, lr 
 		save_model(model, 'roberta_ddp_trained_model_1GPU')
 	clean_process()
 
-# Saving the model:
+# Saving the fine-tuned model checkpoints
 def save_model(model, save_path):
 	os.makedirs(save_path, exist_ok = True)
 	model_to_save = model.module if hasattr(model, 'module') else model
