@@ -115,7 +115,7 @@ def train_llama(llama_model, dataloader, train_sampler, device, rank, local_rank
 			print(f'[Epoch: {epoch + 1} / {epochs}], average loss: {avg_loss:.4f}', flush = True)
 	return llama_model
 
-# Saving the model
+# Saving the fine-tuned model checkpoints
 def save_model(llama_model, save_path):
 	os.makedirs(save_path, exist_ok = True)
 	model_to_save = llama_model.module if hasattr(llama_model, 'module') else llama_model
