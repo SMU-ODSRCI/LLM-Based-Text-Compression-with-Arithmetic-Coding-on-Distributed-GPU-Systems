@@ -1,3 +1,9 @@
+# --------------------------------------------------------------------------------------------
+# This code has been written by the O' Donnell Data Science and Research Computing Institute
+# at Southern Methodist University. It is intended for research purposes only.
+# Do not redistribute or use this code for commercial applications without seeking permission.
+# --------------------------------------------------------------------------------------------
+
 #!/bin/bash -e
 #SBATCH -p batch
 #SBATCH -A nimam_ml_project_0002
