@@ -9,9 +9,9 @@
 # ===== Shared Job Settings =====
 #SBATCH -p batch
 #SBATCH -A nimam_ml_project_0002
-#SBATCH -J T5-Small_arithmetic_compression
-#SBATCH --output=bert_16GPUs_CDF_GPU_BATCHED_TFOFF_NO-DDP_TENSORIZED_TIMING_BLOCKS_v2_%j.out
-#SBATCH --error=bert_16GPUs_CDF_GPU_BATCHED_TFOFF_NO-DDP_TENSORIZED_TIMING_BLOCKS_v2_%j.err
+#SBATCH -J bert_arithmetic_compression
+#SBATCH --output=BERT_16GPUs_CDF_GPU_BATCHED_TFOFF_NO-DDP_TENSORIZED_TIMING_BLOCKS_v2_%j.out
+#SBATCH --error=BERT_16GPUs_CDF_GPU_BATCHED_TFOFF_NO-DDP_TENSORIZED_TIMING_BLOCKS_v2_%j.err
 #SBATCH --time=00:30:00
 #SBATCH --nodes=2
 #SBATCH --ntasks-per-node=8
