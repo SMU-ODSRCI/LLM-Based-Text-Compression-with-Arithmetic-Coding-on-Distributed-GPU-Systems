@@ -172,7 +172,7 @@ def main_worker(rank, world_size, local_rank, epochs = 10, batch_size = 128, lr 
 		save_model(t5model, 'T5-Small_ddp_trained_model_14GPUs')
 	clean_process()
 
-# Saving the model
+# Saving the fine-tuned model checkpoints
 def save_model(t5model, save_path):
 	os.makedirs(save_path, exist_ok = True)
 	model_to_save = t5model.module if hasattr(t5model, 'module') else t5model
