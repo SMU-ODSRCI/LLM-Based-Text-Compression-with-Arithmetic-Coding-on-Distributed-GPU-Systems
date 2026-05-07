@@ -16,6 +16,7 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 from torch.amp import autocast
 from torch.nn.utils import clip_grad_norm_
 
+# Distributed configuration
 def distributed_config(rank, world_size, local_rank):
 	host = os.environ.get('MASTER_ADDR', None)
 	if host is None:
@@ -36,22 +37,23 @@ def distributed_config(rank, world_size, local_rank):
 def clean_process():
 	dist.destroy_process_group()
 
+# Dataset loading and preprocessing
 class TextDataset(Dataset):
 	"""
 	TextDataset() class for next-token prediction training with a fixed sliding window.
 	For each token position in this class, we consider an overlapping context window of 64 tokens, where:
 		- context = tokens[idx:idx + context_window + 1]
         - ground truth token (target) = [-100, ..., -100, input_ids[-1]]
-    Windowed training samples are no longer precomputed and stored using Python lists as it can make the dataset construction computationally expensive
-    Instead, the original token sequence is stored once and each window is created only when DataLoader asks for the token sample at position 'idx'
-    This still preserves the same stride-1 overlapping windows, but with lower memory consumption
+    Windowed training samples are no longer precomputed and stored using Python lists as it can make the dataset construction computationally expensive.
+    Instead, the original token sequence is stored once and each window is created only when DataLoader asks for the token sample at position 'idx'.
+    This still preserves the same stride-1 overlapping windows, but with lower memory consumption.
 
     Since inference uses 64 context tokens as Llama's decoder input (no pad token handling required),
     training (fine-tuning) should also use the same decoder contexts, but compute loss only at the last decoder position, predicting exactly one next-token per sliding window.
 
 	For fine-tuning Llama, we use context_window + 1 to slice the sequence of tokens into input IDs because
-	Hugging Face decoder-only causal LMs compute loss using an internal shifting rule so that logits at position i is trained to predict the label position i + 1
-    Therefore, we need to include the target token inside the sequence as the final token
+	Hugging Face decoder-only causal LMs compute loss using an internal shifting rule so that logits at position i is trained to predict the label position i + 1.
+    Therefore, we need to include the target token inside the sequence as the final token.
     """
 	def __init__(self, tokens, context_window = None):
 		super().__init__()
@@ -80,6 +82,7 @@ class TextDataset(Dataset):
 
 		return decoder_input_ids, decoder_attention_masks, labels
 
+# Llama-3.2-3B fine-tuning for next-token predictions
 def train_llama(llama_model, dataloader, train_sampler, device, rank, local_rank, epochs = 10, lr = 1e-5, max_norm = 1.0, fused_AdamW = True, torch_compile = True):
 	llama_model = DDP(llama_model, device_ids = [local_rank])
 	# Apply torch.compile() after wrapping Llama with DDP
@@ -112,12 +115,14 @@ def train_llama(llama_model, dataloader, train_sampler, device, rank, local_rank
 			print(f'[Epoch: {epoch + 1} / {epochs}], average loss: {avg_loss:.4f}', flush = True)
 	return llama_model
 
+# Saving the model
 def save_model(llama_model, save_path):
 	os.makedirs(save_path, exist_ok = True)
 	model_to_save = llama_model.module if hasattr(llama_model, 'module') else llama_model
 	torch.save(model_to_save.state_dict(), f'{save_path}/pytorch_model_Llama-3.2-3B_10GPUs.bin')
 	print(f'Fine-tuned Llama-3.2-3B checkpoints saved to {save_path}', flush = True)
 
+# Main worker function
 def main_worker(rank, world_size, local_rank, epochs = 10, batch_size = 128, lr = 1e-5, max_norm = 1.0, fused_AdamW = True, torch_compile = True):
 	distributed_config(rank, world_size, local_rank)
 	device = torch.device('cuda', local_rank)
