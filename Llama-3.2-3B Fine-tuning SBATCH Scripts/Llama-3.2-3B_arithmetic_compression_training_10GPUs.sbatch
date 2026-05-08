@@ -9,9 +9,9 @@
 # ===== Shared Job Settings =====
 #SBATCH -p batch
 #SBATCH -A nimam_ml_project_0002
-#SBATCH -J Llama-3.2_arithmetic_compression
-#SBATCH --output=Llama-3.2_arithmetic_compression_training_10GPUs_v3_%j.out
-#SBATCH --error=Llama-3.2_arithmetic_compression_training_10GPUs_v3_%j.err
+#SBATCH -J llama-3.2-3B_arithmetic_compression
+#SBATCH --output=Llama-3.2-3B_arithmetic_compression_training_10GPUs_v3_%j.out
+#SBATCH --error=Llama-3.2-3B_arithmetic_compression_training_10GPUs_v3_%j.err
 #SBATCH --time=05:00:00
 #SBATCH --mail-type=END
 #SBATCH --mail-user=abrara@mail.smu.edu
