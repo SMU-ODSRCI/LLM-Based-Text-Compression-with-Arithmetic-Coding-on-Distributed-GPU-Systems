@@ -1,4 +1,4 @@
-name: llm_ac_text_compressio
+name: llm_ac_text_compression
 channels:
   - defaults
   - conda-forge
