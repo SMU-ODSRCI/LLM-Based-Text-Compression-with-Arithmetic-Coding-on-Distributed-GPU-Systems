@@ -440,7 +440,7 @@ def evaluate_ac_t5(rank, world_size, local_rank, data_path = 'wiki.train.txt', c
 			elif tag == 'als2cpu_dec': als_to_cpu_dec_time_ms += gpu_time
 		event_buff.clear()
 
-	# Load CausalRoBERTa model
+	# Load CausalT5 model
 	t5small_model = load_CausalT5(model_name = 't5-small', device = device)
 
 	# Load the test (unseen) text segment and calculate the original file size
