@@ -9,7 +9,7 @@ import math, time, io
 from transformers import T5Tokenizer
 from T5_ddp_training_1GPU import CausalT5
 
-# Enable/disable TF32 on Ampere (A100) GPUs
+# Disable TF32 on Ampere 100 (A100) GPUs
 torch.backends.cuda.matmul.allow_tf32 = False
 torch.backends.cudnn.allow_tf32 = False
 
@@ -26,9 +26,10 @@ ALS_TO_CPU_ENC_TIME = True
 ALS_TO_CPU_DEC_TIME = True
 
 # Load the fine-tuned CausalT5 model checkpoints
+# Here, CausalT5 refers to the fine-tuned T5-Small model
 def load_CausalT5(model_name = 't5-small', device = None):
 	"""
-	Loads the fine-tuned CausalT5 weights and biases from a .bin checkpoint
+	Loads the fine-tuned CausalT5 weights and biases from saved checkpoints
 	"""
 
 	t5small_model = CausalT5(device = device, model_name = model_name)
@@ -65,7 +66,7 @@ def predict_next_token_probs(t5small_model, batch_encoder_context = None, batch_
 	Includes temperature scaling where:
 		- temperature > 1.0 --> softer probability distribution
 		- temperature < 1.0 --> sharper probability distribution
-		- temperature = 1.0 --> T5-Small's true probability distribution as is.
+		- temperature = 1.0 --> T5-Small's true probability distribution as is
 	"""
 
 	with torch.inference_mode():
@@ -357,11 +358,11 @@ class ArithmeticCoder:
 def evaluate_ac_t5(device = None, data_path = None, context_window = 64, temperature = 1.0):
 	"""
 	This function:
-		- Builds a token stream from enwiki9
-		- Constructs contexts and attention masks for T5-Small's encoder and decoder
-		- Encodes tokens at each step using a set of 64 context tokens and predicted next-token probabilities
-		- Decodes tokens using the same sliding window strategy, probability distribution, and integer CDF model as in encoding
-		- Verifies perfect equality after decoding
+		- builds a token stream from enwiki9
+		- constructs contexts and attention masks for T5-Small's encoder and decoder
+		- encodes tokens at each step using a set of 64 context tokens and predicted next-token probabilities
+		- decodes tokens using the same sliding window strategy, probability distribution, and integer CDF model as in encoding
+		- verifies perfect equality after decoding
 	"""
 
  	# Initialize GPU timing accumulators
