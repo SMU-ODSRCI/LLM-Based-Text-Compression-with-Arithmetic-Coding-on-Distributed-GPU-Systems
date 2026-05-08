@@ -9,7 +9,7 @@ import math, time, io
 from transformers import RobertaTokenizer
 from roberta_ddp_training_1GPU import CausalRoBERTa
 
-# Enable/disable TF32 on Ampere (A100) GPUs
+# Disable TF32 on Ampere 100 (A100) GPUs
 torch.backends.cuda.matmul.allow_tf32 = False
 torch.backends.cudnn.allow_tf32 = False
 
@@ -28,7 +28,7 @@ ALS_TO_CPU_DEC_TIME = True
 # Load the fine-tuned CausalRoBERTa model checkpoints
 def load_CausalRoBERTa(model_name = 'roberta-base', device = None):
 	"""
-	Loads the fine-tuned CausalRoBERTa weights and biases from a .bin checkpoint
+	Loads the fine-tuned CausalRoBERTa weights and biases from saved checkpoints
 	"""
 
 	roberta_model = CausalRoBERTa(device = device, model_name = model_name)
@@ -65,7 +65,7 @@ def predict_next_token_probs(roberta_model, batch_context_ids = None, batch_atte
 	Includes temperature scaling where:
 		- temperature > 1.0 --> softer probability distribution
 		- temperature < 1.0 --> sharper probability distribution
-		- temperature = 1.0 --> RoBERTa's true probability distribution as is.
+		- temperature = 1.0 --> RoBERTa's true probability distribution as is
 	"""
 
 	with torch.inference_mode():
@@ -357,11 +357,11 @@ class ArithmeticCoder:
 def evaluate_ac_roberta(device = None, data_path = None, context_window = 64, temperature = 1.0):
 	"""
 	This function:
-		- Builds a token stream from enwiki9
-		- Constructs contexts and attention masks for RoBERTa's encoder
-		- Encodes tokens at each step using a set of 64 context tokens and predicted next-token probabilities
-		- Decodes tokens using the same sliding window strategy, probability distribution, and integer CDF model as in encoding
-		- Verifies perfect equality after decoding
+		- builds a token stream from enwiki9
+		- constructs contexts and attention masks for RoBERTa's encoder
+		- encodes tokens at each step using a set of 64 context tokens and predicted next-token probabilities
+		- decodes tokens using the same sliding window strategy, probability distribution, and integer CDF model as in encoding
+		- verifies perfect equality after decoding
 	"""
 
  	# Initialize GPU timing accumulators
