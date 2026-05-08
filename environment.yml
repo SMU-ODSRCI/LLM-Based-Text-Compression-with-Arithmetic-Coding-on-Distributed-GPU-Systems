@@ -1,4 +1,4 @@
-name: zero_shot_text_compression
+name: llm_ac_text_compression
 channels:
   - defaults
   - conda-forge
