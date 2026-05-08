@@ -7,9 +7,9 @@
 #!/bin/bash -e
 #SBATCH -p batch
 #SBATCH -A nimam_ml_project_0002
-#SBATCH -J Llama-3.2_arithmetic_compression_training
-#SBATCH --output=Llama-3.2_arithmetic_compression_training_2GPUs_v3_%j.out
-#SBATCH --error=Llama-3.2_arithmetic_compression_training_2GPUs_v3_%j.err
+#SBATCH -J llama-3.2-3B_arithmetic_compression_training
+#SBATCH --output=Llama-3.2-3B_arithmetic_compression_training_2GPUs_v3_%j.out
+#SBATCH --error=Llama-3.2-3B_arithmetic_compression_training_2GPUs_v3_%j.err
 #SBATCH --nodes=1
 #SBATCH --ntasks=2
 #SBATCH --gres=gpu:2
