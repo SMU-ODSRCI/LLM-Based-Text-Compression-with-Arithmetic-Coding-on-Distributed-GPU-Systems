@@ -112,4 +112,4 @@ dependencies:
       - typing-extensions==4.15.0
       - tzdata==2025.2
       - urllib3==2.5.0
-prefix: /users/abrara/.conda/envs/zero_shot_text_compression
+prefix: /users/abrara/.conda/envs/llm_ac_text_compression
