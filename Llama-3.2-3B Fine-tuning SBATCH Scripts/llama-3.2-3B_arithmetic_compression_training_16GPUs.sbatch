@@ -30,4 +30,4 @@ export MASTER_PORT=29509
 export NCCL_SOCKET_IFNAME=^lo,docker
 export OMP_NUM_THREADS=1
 
-srun --cpu-bind=cores --cpus-per-task=4 python3 -u Llama_ddp_training_16GPUs.py
+srun --cpu-bind=cores --cpus-per-task=4 python3 -u llama-3.2-3B_ddp_training_16GPUs.py
