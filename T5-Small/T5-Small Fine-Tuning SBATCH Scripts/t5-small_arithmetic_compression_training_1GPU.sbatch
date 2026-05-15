@@ -22,7 +22,7 @@
 
 module purge
 module load miniforge
-mamba activate llm_ac_text_compression
+conda activate llm_ac_text_compression
 
 export MASTER_ADDR=$(scontrol show hostnames $SLURM_NODELIST | head -n 1)
 export MASTER_PORT=29500
