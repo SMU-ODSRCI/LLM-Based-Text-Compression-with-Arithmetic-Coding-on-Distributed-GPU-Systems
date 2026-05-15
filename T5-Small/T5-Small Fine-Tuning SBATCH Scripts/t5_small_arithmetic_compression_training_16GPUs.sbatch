@@ -30,4 +30,4 @@ export MASTER_PORT=29508
 export NCCL_SOCKET_IFNAME=^lo,docker
 export OMP_NUM_THREADS=1
 
-srun --cpu-bind=cores --cpus-per-task=4 python3 -u t5-small_ddp_training_16GPUs.py
+srun --cpu-bind=cores --cpus-per-task=4 python3 -u t5_small_ddp_training_16GPUs.py
