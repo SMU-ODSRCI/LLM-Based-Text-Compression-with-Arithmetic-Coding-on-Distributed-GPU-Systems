@@ -100,15 +100,15 @@ To launch fine-tuning directly from the login node while inside the project dire
 
 - `sbatch bert_arithmetic_compression_training_1GPU.sbatch`
 - `sbatch roberta_arithmetic_compression_training_1GPU.sbatch`
-- `sbatch t5-small_arithmetic_compression_training_1GPU.sbatch`
-- `sbatch llama-3.2-3B_arithmetic_compression_training_1GPU.sbatch`
+- `sbatch t5_small_arithmetic_compression_training_1GPU.sbatch`
+- `sbatch llama_3.2_3B_arithmetic_compression_training_1GPU.sbatch`
 
 To launch multi-GPU fine-tuning directly from the login node while inside the project directory, use the same naming convention with the required GPU count. For example, to fine-tune each LLM on 8 GPUs, run:
 
 - `sbatch bert_arithmetic_compression_training_8GPUs.sbatch`
 - `sbatch roberta_arithmetic_compression_training_8GPUs.sbatch`
-- `sbatch t5-small_arithmetic_compression_training_8GPUs.sbatch`
-- `sbatch llama-3.2-3B_arithmetic_compression_training_8GPUs.sbatch`
+- `sbatch t5_small_arithmetic_compression_training_8GPUs.sbatch`
+- `sbatch llama_3.2_3B_arithmetic_compression_training_8GPUs.sbatch`
 
 ## Inference
 
@@ -118,8 +118,8 @@ To launch inference and compression directly from the login node while inside th
 
 - `sbatch bert_arithmetic_compression_1GPU_CDF_GPU_BATCHED_TFOFF_NO-DDP_TENSORIZED_TIMING_BLOCKS.sbatch`
 - `sbatch roberta_arithmetic_compression_1GPU_CDF_GPU_BATCHED_TFOFF_NO-DDP_TENSORIZED_TIMING_BLOCKS.sbatch`
-- `sbatch t5-small_arithmetic_compression_1GPU_CDF_GPU_BATCHED_TFOFF_NO-DDP_TENSORIZED_TIMING_BLOCKS.sbatch`
-- `sbatch llama-3.2-3B_arithmetic_compression_1GPU_CDF_GPU_BATCHED_TFOFF_NO-DDP_TENSORIZED_TIMING_BLOCKS.sbatch`
+- `sbatch t5_small_arithmetic_compression_1GPU_CDF_GPU_BATCHED_TFOFF_NO-DDP_TENSORIZED_TIMING_BLOCKS.sbatch`
+- `sbatch llama_3.2_3B_arithmetic_compression_1GPU_CDF_GPU_BATCHED_TFOFF_NO-DDP_TENSORIZED_TIMING_BLOCKS.sbatch`
 
 To launch multi-GPU inference and compression directly from the login node while inside the project directory, use the same naming convention with the required GPU count. For example, to launch LLM + AC inference on 8 GPUs, run:
 
