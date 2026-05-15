@@ -26,6 +26,7 @@ The system architecture shown above follows an end-to-end, hybrid text compressi
 ```tree
 ├── environment.yml
 ├── requirements.txt
+├── download_models.py
 ├── Figure/
 │   ├── System Architecture.png
 ├── ReadMe.md
@@ -75,6 +76,7 @@ All codes have been developed and implemented on the NVIDIA DGX Ampere 100 (A100
     ```bash
     pip install -r requirements.txt
     ```
+- Use the `download_models.py` script as it serves as the centralized model downloading process so that there is no need to inspect each Python script to identify the required pretrained models. The Hugging Face transformer models implemented in this repository are gated and therefore, it is required to request and receive access through Hugging Face before the models can be downloaded and used in the environment. A valid Hugging Face account will need to be set up prior to going through this process. After access is granted and authentication is complete, the models can be downloaded into the environment and reused by the fine-tuning and inference scripts.
 
 ## Datasets
 
