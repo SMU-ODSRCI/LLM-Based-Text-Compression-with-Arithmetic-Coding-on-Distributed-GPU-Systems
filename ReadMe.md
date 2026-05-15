@@ -125,8 +125,8 @@ To launch multi-GPU inference and compression directly from the login node while
 
 - `sbatch bert_arithmetic_compression_8GPUs_CDF_GPU_BATCHED_TFOFF_NO-DDP_TENSORIZED_TIMING_BLOCKS.sbatch`
 - `sbatch roberta_arithmetic_compression_8GPUs_CDF_GPU_BATCHED_TFOFF_NO-DDP_TENSORIZED_TIMING_BLOCKS.sbatch`
-- `sbatch t5-small_arithmetic_compression_8GPUs_CDF_GPU_BATCHED_TFOFF_NO-DDP_TENSORIZED_TIMING_BLOCKS.sbatch`
-- `sbatch llama-3.2-3B_arithmetic_compression_8GPUs_CDF_GPU_BATCHED_TFOFF_NO-DDP_TENSORIZED_TIMING_BLOCKS.sbatch`
+- `sbatch t5_small_arithmetic_compression_8GPUs_CDF_GPU_BATCHED_TFOFF_NO-DDP_TENSORIZED_TIMING_BLOCKS.sbatch`
+- `sbatch llama_3.2-3B_arithmetic_compression_8GPUs_CDF_GPU_BATCHED_TFOFF_NO-DDP_TENSORIZED_TIMING_BLOCKS.sbatch`
 
 ## Reproducibility Notes
 
