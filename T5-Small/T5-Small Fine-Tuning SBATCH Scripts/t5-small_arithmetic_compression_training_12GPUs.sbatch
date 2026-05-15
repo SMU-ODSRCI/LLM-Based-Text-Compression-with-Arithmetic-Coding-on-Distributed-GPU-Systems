@@ -1,10 +1,10 @@
+#!/bin/bash -e
+
 # --------------------------------------------------------------------------------------------
 # This code has been written by the O' Donnell Data Science and Research Computing Institute
 # at Southern Methodist University. It is intended for research purposes only.
 # Do not redistribute or use this code for commercial applications without seeking permission.
 # --------------------------------------------------------------------------------------------
-
-#!/bin/bash -e
 
 # ===== Shared Job Settings =====
 #SBATCH -p batch
@@ -30,7 +30,7 @@
 
 module purge
 module load conda
-conda activate zero_shot_text_compression
+conda activate llm_ac_text_compression
 
 export MASTER_ADDR=$(scontrol show hostnames $SLURM_NODELIST | head -n 1)
 export MASTER_PORT=29506
