@@ -24,35 +24,33 @@ The system architecture shown above follows an end-to-end, hybrid text compressi
 ## Repository Structure
 
 ```tree
-├── environment.yml
-├── requirements.txt
-├── download_models.py
+├── BERT/
+│   ├── BERT + AC Inference Codes/
+│   ├── BERT + AC Inference SBATCH Scripts/
+│   ├── BERT Fine-Tuning Codes/
+│   └── BERT Fine-Tuning SBATCH Scripts/
 ├── Figure/
 │   ├── System Architecture.png
-├── ReadMe.md
-├── BERT/
-│   ├── BERT Fine-Tuning Codes/
-│   ├── BERT Fine-Tuning SBATCH Scripts/
-│   ├── BERT + AC Inference Codes/
-│   └── BERT + AC Inference SBATCH Scripts/
 ├── RoBERTa/
-│   ├── RoBERTa Fine-Tuning Codes/
-│   ├── RoBERTa Fine-Tuning SBATCH Scripts/
 │   ├── RoBERTa + AC Inference Codes/
-│   └── RoBERTa + AC Inference SBATCH Scripts/
+│   ├── RoBERTa + AC Inference SBATCH Scripts/
+│   ├── RoBERTa Fine-Tuning Codes/
+│   └── RoBERTa Fine-Tuning SBATCH Scripts/
 ├── T5-Small/
-│   ├── T5-Small Fine-Tuning Codes/
-│   ├── T5-Small Fine-Tuning SBATCH Scripts/
 │   ├── T5-Small + AC Inference Codes/
-│   └── T5-Small + AC Inference SBATCH Scripts/
+│   ├── T5-Small + AC Inference SBATCH Scripts/
+│   ├── T5-Small Fine-Tuning Codes/
+│   └── T5-Small Fine-Tuning SBATCH Scripts/
 ├── Llama-3.2-3B/
-      ├── Llama-3.2-3B Fine-Tuning Codes/
-      ├── Llama-3.2-3B Fine-Tuning SBATCH Scripts/
-      ├── Llama-3.2-3B + AC Inference Codes/
-      └── Llama-3.2-3B + AC Inference SBATCH Scripts/
-
+│     ├── Llama-3.2-3B + AC Inference Codes/
+│      ├── Llama-3.2-3B + AC Inference SBATCH Scripts/
+│     ├── Llama-3.2-3B Fine-Tuning Codes/
+│      └── Llama-3.2-3B Fine-Tuning SBATCH Scripts/
+├── ReadMe.md
+├── download_models.py
+├── environment.yml
+├── requirements.txt
 ```
-
 ## System Requirements
 
 - Any machine or workstation with access to a dedicated GPU or HPC support
