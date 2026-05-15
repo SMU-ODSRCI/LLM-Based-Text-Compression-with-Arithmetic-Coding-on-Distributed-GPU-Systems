@@ -40,7 +40,7 @@ echo "----- sacct (start snapshot; may be sparse early) -----"
 sacct -j "${JOBID}" --format=JobID,MaxRSS,ReqMem,Elapsed 2>&1 || true
 echo "========================="
 
-srun --cpu-bind=cores --cpus-per-task=4 python3 -u t5-small_arithmetic_compression_4GPUs_CDF_GPU_BATCHED_TFOFF_NO-DDP_TENSORIZED_TIMING_BLOCKS.py
+srun --cpu-bind=cores --cpus-per-task=4 python3 -u t5_small_arithmetic_compression_4GPUs_CDF_GPU_BATCHED_TFOFF_NO-DDP_TENSORIZED_TIMING_BLOCKS.py
 
 echo "======= JOB END ========"
 hostname
