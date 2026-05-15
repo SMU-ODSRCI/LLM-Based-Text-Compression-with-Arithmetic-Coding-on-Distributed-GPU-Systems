@@ -31,6 +31,11 @@ The system architecture shown above follows an end-to-end, hybrid text compressi
 │   └── BERT Fine-Tuning SBATCH Scripts/
 ├── Figure/
 │   ├── System Architecture.png
+├── Llama-3.2-3B/
+│   ├── Llama-3.2-3B + AC Inference Codes/
+│   ├── Llama-3.2-3B + AC Inference SBATCH Scripts/
+│   ├── Llama-3.2-3B Fine-Tuning Codes/
+│   └── Llama-3.2-3B Fine-Tuning SBATCH Scripts/
 ├── RoBERTa/
 │   ├── RoBERTa + AC Inference Codes/
 │   ├── RoBERTa + AC Inference SBATCH Scripts/
@@ -41,11 +46,6 @@ The system architecture shown above follows an end-to-end, hybrid text compressi
 │   ├── T5-Small + AC Inference SBATCH Scripts/
 │   ├── T5-Small Fine-Tuning Codes/
 │   └── T5-Small Fine-Tuning SBATCH Scripts/
-├── Llama-3.2-3B/
-│     ├── Llama-3.2-3B + AC Inference Codes/
-│      ├── Llama-3.2-3B + AC Inference SBATCH Scripts/
-│     ├── Llama-3.2-3B Fine-Tuning Codes/
-│      └── Llama-3.2-3B Fine-Tuning SBATCH Scripts/
 ├── ReadMe.md
 ├── download_models.py
 ├── environment.yml
