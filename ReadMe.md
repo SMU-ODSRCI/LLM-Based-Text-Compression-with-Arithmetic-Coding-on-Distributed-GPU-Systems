@@ -1,4 +1,4 @@
-## Title: LLM-Based Text Compression with Arithmetic Coding on Distributed GPU Systems
+## Title: LLM-Based Text Compression with Arithmetic Coding on Distributed GPU System
 
 ## Overview
 
