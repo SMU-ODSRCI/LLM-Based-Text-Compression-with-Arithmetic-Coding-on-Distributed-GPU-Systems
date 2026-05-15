@@ -65,9 +65,6 @@ setuptools==80.9.0
 six==1.17.0
 sympy==1.14.0
 tokenizers==0.22.1
-torch==2.10.0+cu128
-torchaudio==2.10.0+cu128
-torchvision==0.25.0+cu128
 tqdm==4.67.1
 transformers==4.57.1
 triton==3.6.0
@@ -75,3 +72,7 @@ typing_extensions==4.15.0
 tzdata==2025.2
 urllib3==2.5.0
 wheel==0.45.1
+torch==2.10.0+cu128
+torchaudio==2.10.0+cu128
+torchvision==0.25.0+cu128
+--extra-index-url https://download.pytorch.org/whl/cu128
