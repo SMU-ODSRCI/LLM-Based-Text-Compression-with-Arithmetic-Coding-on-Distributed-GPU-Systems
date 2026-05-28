@@ -6,7 +6,7 @@
 # Do not redistribute or use this code for commercial applications without seeking permission.
 # --------------------------------------------------------------------------------------------
 
-#SBATCH -p short
+#SBATCH -p batch
 #SBATCH -A nimam_ml_project_0002
 #SBATCH -J t5-small_arithmetic_compression
 #SBATCH --output=T5-Small_1GPU_CDF_GPU_BATCHED_TFOFF_NO-DDP_TENSORIZED_TIMING_BLOCKS_v2_%j.out
