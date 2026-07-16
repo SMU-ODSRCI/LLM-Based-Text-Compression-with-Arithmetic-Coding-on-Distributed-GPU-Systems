@@ -44,6 +44,7 @@ dependencies:
       - cuda-bindings==12.9.4
       - cuda-pathfinder==1.2.2
       - cycler==0.12.1
+      - datasets==4.8.5
       - filelock==3.19.1
       - fonttools==4.60.1
       - fsspec==2025.9.0
